@@ -15,7 +15,7 @@ export default function Header({
 
   return (
     <div className="header">
-      <h1>📅 My Schedule</h1>
+      <h1>My Schedule</h1>
 
       <div className="controls">
         {/* Semester Selector */}
@@ -57,7 +57,7 @@ export default function Header({
           onClick={saveDraft}
           className="btn-emerald flex items-center gap-2"
         >
-          💾 Save Draft
+          Save Draft
         </button>
 
         <button 
@@ -71,7 +71,7 @@ export default function Header({
           onClick={() => setShowDrafts(true)}
           className="btn-amber"
         >
-          📂 My Drafts
+           My Drafts
         </button>
 
         <button 
@@ -90,7 +90,7 @@ export default function Header({
           }}
           className="btn-blue flex items-center gap-2"
         >
-          📤 Download
+           Download
         </button>
       </div>
     </div>

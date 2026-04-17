@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-const timeSlots = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-
 export default function ScheduleGrid({ 
   currentEvents, 
   setCurrentEvents, 
@@ -18,15 +16,39 @@ export default function ScheduleGrid({
     ...weekDaysFull.slice(0, startIndex)
   ];
 
-  const handleCellClick = (day, time) => {
-    const existing = currentEvents.find(e => e.day === day && e.time === time);
+  // Generate time slots from 8:00 AM to 8:00 PM in 30-minute increments
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 8; hour <= 20; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const time24 = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        let displayTime = time24;
+
+        if (hour > 12) {
+          displayTime = `${hour - 12}:${minute.toString().padStart(2, '0')} PM`;
+        } else if (hour === 12) {
+          displayTime = `12:${minute.toString().padStart(2, '0')} PM`;
+        } else {
+          displayTime = `${hour}:${minute.toString().padStart(2, '0')} AM`;
+        }
+        
+        slots.push({ time24, displayTime });
+      }
+    }
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
+
+  const handleCellClick = (day, time24) => {
+    const existing = currentEvents.find(e => e.day === day && e.startTime === time24);
     
     if (existing) {
-      if (confirm(`Remove this class?\n${existing.type} at ${day} ${time}`)) {
-        setCurrentEvents(prev => prev.filter(e => !(e.day === day && e.time === time)));
+      if (confirm(`Remove this class?\n${existing.type} at ${day} ${existing.startTime}`)) {
+        setCurrentEvents(prev => prev.filter(e => !(e.day === day && e.startTime === time24)));
       }
     } else {
-      setSelectedCell({ day, time });
+      setSelectedCell({ day, time: time24 });
       setShowAddEvent(true);
     }
   };
@@ -35,31 +57,31 @@ export default function ScheduleGrid({
     <div className="schedule-container">
       <div className="schedule-header">
         <h2>Timetable</h2>
-        <p>Click any empty cell to add a class</p>
+        <p>Click any empty cell to add a class (supports different durations)</p>
       </div>
 
       <table className="schedule-table">
         <thead>
           <tr>
-            <th className="time-cell"></th>
+            <th className="time-cell">Time</th>
             {displayedDays.map(day => (
               <th key={day}>{day}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map(time => (
-            <tr key={time}>
-              <td className="time-cell">{time}</td>
+          {timeSlots.map(({ time24, displayTime }) => (
+            <tr key={time24}>
+              <td className="time-cell">{displayTime}</td>
               {displayedDays.map(day => {
-                const event = currentEvents.find(e => e.day === day && e.time === time);
+                const event = currentEvents.find(e => e.day === day && e.startTime === time24);
                 const course = event ? currentSemester.courses.find(c => c.id === event.courseId) : null;
 
                 return (
                   <td 
                     key={day}
                     className="grid-cell"
-                    onClick={() => handleCellClick(day, time)}
+                    onClick={() => handleCellClick(day, time24)}
                     style={event && course ? { backgroundColor: course.color + '30' } : {}}
                   >
                     {event && course ? (
@@ -74,8 +96,11 @@ export default function ScheduleGrid({
                         <div style={{ fontSize: '0.85rem', opacity: 0.9, marginTop: '2px' }}>
                           {event.type}
                         </div>
+                        <div style={{ fontSize: '0.8rem', marginTop: '4px' }}>
+                          {event.startTime} - {event.endTime || '??'}
+                        </div>
                         {event.hall && (
-                          <div style={{ fontSize: '0.78rem', marginTop: '6px', color: '#34d399' }}>
+                          <div style={{ fontSize: '0.78rem', marginTop: '4px', color: '#34d399' }}>
                             📍 {event.hall}
                           </div>
                         )}

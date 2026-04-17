@@ -9,7 +9,7 @@ export default function CourseEditPanel({
   setCurrentEvents 
 }) {
 
-  const [editedCourse, setEditedCourse] = useState(course);
+  const [editedCourse, setEditedCourse] = useState(null);
   const [newTiming, setNewTiming] = useState({
     day: "Monday",
     startTime: "08:30",
@@ -20,25 +20,29 @@ export default function CourseEditPanel({
     section: ""
   });
 
-  // Reset when course changes
+  // Reset form when course changes
   useEffect(() => {
-    if (course) setEditedCourse(course);
+    if (course) {
+      setEditedCourse({ ...course });
+    }
   }, [course]);
 
   const handleSaveCourse = () => {
-    onSaveCourse(editedCourse);
+    if (editedCourse) {
+      onSaveCourse(editedCourse);
+    }
     onClose();
   };
 
   const addTiming = () => {
-    if (!newTiming.startTime || !newTiming.endTime) return;
+    if (!editedCourse || !newTiming.startTime || !newTiming.endTime) return;
 
     const timingEvent = {
       id: Date.now(),
       courseId: editedCourse.id,
       day: newTiming.day,
       startTime: newTiming.startTime,
-      endTime: newTiming.endTime,        // New: end time support
+      endTime: newTiming.endTime,
       type: newTiming.type,
       hall: newTiming.hall || null,
       group: newTiming.group || null,
@@ -46,7 +50,7 @@ export default function CourseEditPanel({
     };
 
     setCurrentEvents(prev => [...prev, timingEvent]);
-    alert("Timing added to schedule!");
+    alert("✅ Timing added successfully!");
   };
 
   const deleteTiming = (eventId) => {
@@ -55,7 +59,7 @@ export default function CourseEditPanel({
     }
   };
 
-  if (!isOpen || !course) return null;
+  if (!isOpen || !course || !editedCourse) return null;
 
   return (
     <div className={`edit-panel ${isOpen ? 'open' : ''}`}>
@@ -84,17 +88,16 @@ export default function CourseEditPanel({
           type="color" 
           value={editedCourse.color}
           onChange={(e) => setEditedCourse({...editedCourse, color: e.target.value})}
-          style={{width: '80px', height: '50px', padding: '4px'}}
         />
       </div>
 
-      <button onClick={handleSaveCourse} className="save-btn" style={{width:'100%', marginTop:'20px'}}>
+      <button onClick={handleSaveCourse} className="save-btn" style={{width: '100%', margin: '20px 0'}}>
         Save Course Changes
       </button>
 
-      {/* Add New Timing Section */}
+      {/* Add Timing Section */}
       <div style={{marginTop: '40px'}}>
-        <h3 style={{marginBottom: '16px'}}>Add Timing</h3>
+        <h3>Add New Timing</h3>
         
         <div className="panel-form">
           <label>Day</label>
@@ -140,7 +143,7 @@ export default function CourseEditPanel({
             onChange={(e) => setNewTiming({...newTiming, hall: e.target.value})}
           />
 
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px'}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px'}}>
             <div>
               <label>Group</label>
               <input 
@@ -163,27 +166,30 @@ export default function CourseEditPanel({
         </div>
 
         <button onClick={addTiming} className="add-timing-btn">
-          + Add This Timing to Schedule
+          + Add Timing to Schedule
         </button>
       </div>
 
-      {/* Existing Timings for this course */}
+      {/* Current Timings */}
       <div className="timings-list">
         <h3>Current Timings</h3>
-        {currentEvents
-          .filter(e => e.courseId === course.id)
-          .map(event => (
-            <div key={event.id} className="timing-item">
-              <strong>{event.day} • {event.startTime} - {event.endTime || event.time}</strong><br />
-              <span>{event.type}</span>
-              {event.hall && <span> | 📍 {event.hall}</span>}
-              <button onClick={() => deleteTiming(event.id)}>
-                Delete Timing
-              </button>
-            </div>
-          ))}
-        {currentEvents.filter(e => e.courseId === course.id).length === 0 && (
-          <p style={{color:'#666', textAlign:'center', padding:'20px 0'}}>No timings added yet</p>
+        {currentEvents.filter(e => e.courseId === course.id).length === 0 ? (
+          <p style={{color: '#666', textAlign: 'center', padding: '30px 0'}}>
+            No timings added yet
+          </p>
+        ) : (
+          currentEvents
+            .filter(e => e.courseId === course.id)
+            .map(event => (
+              <div key={event.id} className="timing-item">
+                <strong>{event.day} • {event.startTime} - {event.endTime || event.time}</strong><br />
+                <span>{event.type}</span>
+                {event.hall && <span> | 📍 {event.hall}</span>}
+                <button onClick={() => deleteTiming(event.id)}>
+                  Delete Timing
+                </button>
+              </div>
+            ))
         )}
       </div>
     </div>

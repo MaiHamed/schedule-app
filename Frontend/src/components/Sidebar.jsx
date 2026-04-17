@@ -3,22 +3,33 @@ import { useState } from 'react';
 export default function Sidebar({ 
   currentSemester, 
   setShowAddCourse,
-  onEditCourse   // New prop
+  onEditCourse 
 }) {
+
+  const deleteCourse = (courseId) => {
+    if (confirm("Delete this course and all its timings?")) {
+      // You need to pass this function from App.jsx if you want to delete from sidebar
+      // For now, we'll just alert (we'll improve it later)
+      alert("Course deletion from sidebar coming soon. Use the edit panel for now.");
+    }
+  };
 
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>Courses</h2>
-        <button className="btn-violet" onClick={() => setShowAddCourse(true)}>
+        <h2>My Courses</h2>
+        <button 
+          onClick={() => setShowAddCourse(true)}
+          className="add-course-btn"
+        >
           + Add Course
         </button>
       </div>
 
       <div className="course-list">
         {currentSemester.courses.length === 0 ? (
-          <div style={{textAlign:'center', color:'#777', padding:'60px 20px'}}>
-            No courses yet.<br />Click "+ Add Course"
+          <div className="empty-message">
+            No courses yet.<br />Click "+ Add Course" to begin
           </div>
         ) : (
           currentSemester.courses.map(course => (
@@ -26,27 +37,31 @@ export default function Sidebar({
               key={course.id} 
               className="course-item"
               onClick={() => onEditCourse(course)}
-              style={{ cursor: 'pointer' }}
             >
               <div 
-                style={{ 
-                  width: '26px', 
-                  height: '26px', 
-                  borderRadius: '10px', 
-                  backgroundColor: course.color 
-                }}
+                className="course-color" 
+                style={{ backgroundColor: course.color }}
               />
-              <div>
-                <div style={{fontWeight:'500'}}>{course.name}</div>
-                <div style={{fontSize:'0.85rem', color:'#888'}}>{course.code}</div>
+              <div className="course-info">
+                <div className="course-name">{course.name}</div>
+                <div className="course-code">{course.code}</div>
               </div>
+              <button 
+                className="delete-course-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteCourse(course.id);
+                }}
+              >
+                ×
+              </button>
             </div>
           ))
         )}
       </div>
 
-      <div style={{marginTop:'auto', paddingTop:'30px', textAlign:'center', fontSize:'0.8rem', color:'#555'}}>
-        Data saved locally • Drafts supported
+      <div className="sidebar-footer">
+        All data saved in browser
       </div>
     </div>
   );
