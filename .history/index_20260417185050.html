@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>📅 Schedule Builder</h1>
+
+    <div class="controls">
+      <select id="semester">
+        <option>Semester 1</option>
+        <option>Semester 2</option>
+      </select>
+
+      <select id="startDay">
+        <option value="Saturday">Start Saturday</option>
+        <option value="Sunday">Start Sunday</option>
+        <option value="Monday">Start Monday</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- COURSE FORM -->
+    <section class="form">
+      <h2>Add Course</h2>
+
+      <input type="text" placeholder="Course Name" id="courseName">
+      <input type="text" placeholder="Code" id="courseCode">
+      <input type="text" placeholder="Instructor" id="instructor">
+
+      <div class="row">
+        <input type="time" id="startTime">
+        <input type="time" id="endTime">
+      </div>
+
+      <select id="day">
+        <option>Saturday</option>
+        <option>Sunday</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+      </select>
+
+      <button id="addCourse">➕ Add Course</button>
+    </section>
+
+    <!-- ACTION BUTTONS -->
+    <section class="actions">
+      <button id="save">💾 Save Draft</button>
+      <button id="download">📥 Download</button>
+    </section>
+
+    <!-- TIMETABLE -->
+    <section class="table-container">
+      <table id="scheduleTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Sat</th>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be added later with JS -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+</body>
+</html>

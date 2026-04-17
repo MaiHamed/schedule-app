@@ -1,0 +1,315 @@
+/* src/index.css - Improved Dark Modern Scheduler */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #050505;
+  color: #e0e0e0;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Container */
+.app-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #ffffff;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.controls label {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.controls select {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  min-width: 160px;
+}
+
+.controls button {
+  padding: 11px 20px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+}
+
+.btn-emerald {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-emerald:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-amber {
+  background-color: #d97706;
+  color: white;
+}
+
+.btn-blue {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-gray {
+  background-color: #27272a;
+  color: #ccc;
+}
+
+.btn-gray:hover {
+  background-color: #3f3f46;
+}
+
+/* Main Layout */
+.main-layout {
+  display: flex;
+  gap: 28px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 290px;
+  background-color: #121212;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.sidebar-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.course-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: #1f1f1f;
+  padding: 16px 18px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Schedule Area */
+.schedule-container {
+  flex: 1;
+  background-color: #121212;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.schedule-header h2 {
+  font-size: 1.9rem;
+  font-weight: 600;
+}
+
+/* Table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #0a0a0a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.schedule-table th {
+  background-color: #1a1a1a;
+  padding: 18px 12px;
+  font-weight: 600;
+  color: #ddd;
+  border-bottom: 2px solid #252525;
+}
+
+.schedule-table td {
+  padding: 12px;
+  border: 1px solid #252525;
+  height: 78px;
+  vertical-align: middle;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.time-cell {
+  width: 90px;
+  background-color: #1a1a1a;
+  font-weight: 500;
+  color: #999;
+  text-align: right;
+  padding-right: 18px;
+}
+
+.grid-cell {
+  cursor: pointer;
+  position: relative;
+}
+
+.grid-cell:hover {
+  background-color: #1f1f1f;
+}
+
+.grid-cell .plus {
+  font-size: 1.8rem;
+  color: #444;
+}
+
+.grid-cell .event-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  background-color: #181818;
+  border-radius: 24px;
+  padding: 36px;
+  width: 400px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  border: 1px solid #333;
+}
+
+.modal h3 {
+  font-size: 1.65rem;
+  margin-bottom: 26px;
+  color: #fff;
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  background-color: #252525;
+  border: 1px solid #404040;
+  border-radius: 14px;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.modal input:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 15px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.cancel-btn {
+  background-color: #2f2f2f;
+  color: #bbb;
+}
+
+.cancel-btn:hover {
+  background-color: #3a3a3a;
+}
+
+.save-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #059669;
+}
